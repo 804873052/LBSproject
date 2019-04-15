@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test All</title>
+
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+<div id="demo">
+<form method="javascript:;" method="post" class="tm-login-form">
+    <div class="form-group">
+        <label for="username">用户名</label>
+        <input
+                v-model="username"
+                name="username"
+                type="text"
+                class="form-control validate"
+                id="username"
+
+                required
+        />
+    </div>
+    <div class="form-group mt-3">
+        <label for="password">密码</label>
+        <input
+                v-model="password"
+                name="password"
+                type="text"
+                id="password"
+                required
+        />
+    </div>
+    <div class="form-group mt-4">
+        <button type="button" name="button" @click="test">
+            登陆
+        </button>
+    </div>
+</div>
+</form>
+</body>
+<script>
+     var app = new Vue({
+          el: '#demo',
+          data: {
+              username:'',
+              password:''
+          },
+          methods:{
+            test:function(){
+                alert("run");
+                const that = this;
+                var data={
+                    username: this.username,
+                    password: this.password
+                };
+                var data1 = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+
+               try{
+                    xhr.open('post', '/insert_user',true);
+                    xhr.setRequestHeader('content-type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState==4 && xhr.status == 200) {
+                            const result=xhr.responseText;
+                            var obj=JSON.parse(result);
+                            alert("hello");
+                        }
+                    }
+                }
+                catch(e){
+                    alert(e);
+                }
+                xhr.send(data1);   //传json字符串格式的数据
+             }
+            }
+            });
+
+</script>
+</html>

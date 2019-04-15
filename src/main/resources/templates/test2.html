@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>post${session.test}</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app" align="center">
+		账号：<input type="text" v-model="userName">	<br>
+		密码：<input type="text" v-model="passWd">	<br><br>
+		<button @click="btnpost">post请求</button>
+	</div>
+</body>
+	
+		<script>
+		// <script type="application/json">
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				userName: "",
+				passWd: ""
+			},
+			methods: {
+				btnpost: function() {
+					/*************FormData数据格式****************/
+					    // var formdata=new FormData();
+         //    			formdata.append("userName",this.userName);
+         //   		 		formdata.append("passWd",this.passWd);
+           		 	/***************JSON字符串格式****************/
+           		 	var data = {
+           		 		userName: this.userName,
+           		 		passWd: this.passWd
+           		 	};
+           		 	var data1 = JSON.stringify(data);
+           		 	/*********************************************/
+           		 	var xhr = new XMLHttpRequest();
+					try {
+						xhr.open('POST','/b/user/test_post',true);
+						/****将Header的content-type设置为application/json,如果没有这个的话就可能会有415错误,
+						并且下面这天语句在使用FromData类型传送数据时不能使用，否则的话传送的数据为NULL***/
+						xhr.setRequestHeader('content-type','application/json');	
+						xhr.onreadystatechange = function() {
+							if (xhr.readyState == 4 && xhr.status == 200) {
+								
+							/***************只返回一个字符串******************/
+								const result = xhr.responseText;
+								alert(result);
+							}
+						}
+					}
+					catch(err) {
+						console.log(err);
+					}
+					// xhr.send(formdata);	//发送FormData类型数据
+					xhr.send(data1);		//发送JSON类型数据
+				}
+			}
+		})
+	</script>
+</html>

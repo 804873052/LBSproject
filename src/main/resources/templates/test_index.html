@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>${testRequest} &nbsp;&nbsp; ${session.testSession} &nbsp;&nbsp;</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="css/templatemo-style.css">
+      <script src="js/Chart.min.js"></script>
+      <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+      <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+
+</head>
+
+<body id="reportsPage">
+    <div class="" id="home">
+        <nav class="navbar navbar-expand-xl">
+
+                <div class="col-12 tm-block-col">
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                        <h2 class="tm-block-title">企业列表</h2>
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">编号</th>
+                                    <th scope="col">代表人</th>
+                                    <th scope="col">地址</th>
+                                    <th scope="col">名称</th>
+                                    <th scope="col">加入日期</th>
+                                    <th scope="col">合约到期</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr v-for="item in user">
+                                    <th scope="row"><b>{{item.number}}</b></th>
+                                    <td><b>{{item.representative}}</b></td>
+                                    <td><b>{{item.address}} </b></td>
+                                    <td>{{item.partname}}</td>
+                                    <td>{{item.date_add}}</td>
+                                    <td><b>{{item.contract_expiration}}</b></td>
+                                </tr>
+
+                                <tr v-for="item in bloggers">
+                                    <th scope="ro"><b>{{item.number}}</b></th>
+                                    <td><b>{{item.representative}}</b></td>
+                                    <td><b>{{item.address}} </b></td>
+                                    <td >{{item.partname}}</td>
+                                    <td>{{item.date_add}}</td>
+                                    <td><b>{{item.contract_expiration}}</b></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+        <footer class="tm-footer row tm-mt-small">
+            <div class="col-12 font-weight-light">
+                <p class="text-center text-white mb-0 px-4 small">
+                  开发团队 &copy; ：想一个队
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="js/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="js/tooplate-scripts.js"></script>
+    <script>
+
+      var vm = new Vue({
+        el:'#home',
+        data:{
+          user:[
+            {
+              number: 1,
+              representative: "Oliver",
+              address: "Lodon,UK",
+              partname: "A",
+              date_add: "16:00, 12 NOV 2018",
+              contract_expiration: "08:00, 18 NOV 2020"
+            },
+            {
+              number: 2,
+              representative: "Jacob",
+              address: "Lodon,UK",
+              partname: "B",
+              date_add: "11:00, 10 NOV 2018",
+              contract_expiration: "04:00, 14 NOV 2020"
+            }
+          ],
+          bloggers:"",
+        },
+        <!--页面加载时执行函数-->
+        mounted:function(){
+            this.getdate();
+        },
+        methods:{
+          getdate(){
+              <!--alert("getdata");-->
+              const that = this;
+              var xhr = new XMLHttpRequest();
+             try{
+                  xhr.open('get', '/getdates');
+                  xhr.onreadystatechange = function() {
+                      if (xhr.readyState==4 && xhr.status == 200) {
+                          const result = xhr.responseText;
+                          var obj=JSON.parse(result);
+                          that.bloggers = obj;
+                          alert(that.bloggers);
+                      }
+                  }
+              }
+              catch(e){
+                  console.log(e);
+              }
+              xhr.send(null);
+             },
+
+
+        },
+      })
+    </script>
+</body>
+
+</html>

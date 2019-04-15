@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>get${beetl} &nbsp; ${session.test}</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app" align="center">
+		<button @click="Getbtn">get请求</button>
+		<button @click="Getsql">sql请求</button>
+	</div>
+</body>
+	<script>
+		var vm = new Vue({
+			el: '#app',
+			methods: {
+				Getbtn: function() {
+					var xhr = new XMLHttpRequest();
+					try {
+						xhr.open('get','/user/test_get',true);
+						xhr.onreadystatechange = function() {
+							if (xhr.readyState == 4 && xhr.status == 200) {
+
+							/***************只返回一个字符串******************/
+								// const result = xhr.responseText;
+								// alert(result);
+
+							/***************返回JSON数据类型******************/
+							
+								const result = xhr.responseText;
+								<!--const obj = JSON.parse(result);-->
+								<!--alert(obj.code +"\n" +obj.msg);-->
+								alert(result);
+							}
+						}
+					}
+					catch(err) {
+						console.log(err);
+					}
+					xhr.send(null);
+				},
+				Getsql: function() {
+					var xhr = new XMLHttpRequest();
+					try {
+						xhr.open('get','/user/test_sql',true);
+						xhr.onreadystatechange = function() {
+							if (xhr.readyState == 4 && xhr.status == 200) {
+								const result = xhr.responseText;
+								// const obj = JSON.parse(result);
+								// alert(obj.code +"\n" +obj.msg);
+								alert(result);
+							}
+						}
+					}
+					catch(err) {
+						console.log(err);
+					}
+					xhr.send(null);
+				}
+			}
+		})
+	</script>
+</html>

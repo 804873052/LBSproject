@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:if="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>登录页面-产品管理模板</title>
+  <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+  />
+  <!-- https://fonts.google.com/specimen/Open+Sans -->
+  <link rel="stylesheet" href="css/fontawesome.min.css" />
+  <!-- https://fontawesome.com/ -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" href="css/templatemo-style.css">
+  <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+
+<body>
+<div>
+  <nav class="navbar navbar-expand-xl">
+    <div class=" mx-auto h-100" >
+      <ul class="container ">
+        <li class="nav-item">
+          <h1 >LBS云商超级管理系统</h1>
+        </li>
+      </ul>
+    </div>
+    <!--</div>-->
+  </nav>
+</div>
+
+<div class="container tm-mt-big tm-mb-big">
+  <div class="row">
+    <div class="col-12 mx-auto tm-login-col">
+      <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h2 class="tm-block-title mb-4">欢迎登陆</h2>
+          </div>
+        </div>
+        <div class="row mt-2"  id=box>
+          <div class="col-12">
+            <!--javascript:; 访问一个空函数void；-->
+            <form method="javascript:;" method="post" class="tm-login-form">
+              <div class="form-group">
+                <label for="username">用户名</label>
+                <input
+                        v-model="username"
+                        name="username"
+                        type="text"
+                        class="form-control validate"
+                        id="username"
+
+                        required
+                />
+              </div>
+              <div class="form-group mt-3">
+                <label for="password">密码</label>
+                <input
+                        v-model="password"
+                        name="password"
+                        type="text"
+                        class="form-control validate"
+                        id="password"
+
+                        required
+                />
+              </div>
+              <div class="form-group mt-4">
+                <button
+                        type="button"
+                        class="btn btn-primary btn-block text-uppercase" name="button" @click="login"
+                >
+                  登陆
+                </button>
+
+              </div>
+              <button type="button" class="mt-5 btn btn-primary btn-block text-uppercase" @click="ForgetPassword">
+                忘记密码
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="tm-footer row tm-mt-small">
+  <div class="col-12 font-weight-light">
+    <p class="text-center text-white mb-0 px-4 small">
+      开发团队 &copy; ：想一个队
+    </p>
+  </div>
+</footer>
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- https://jquery.com/download/ -->
+<script src="js/bootstrap.min.js"></script>
+<!-- https://getbootstrap.com/ -->
+</body>
+<script>
+      var app = new Vue({
+          el: '#box',
+          data: {
+              username:'',
+              password:''
+          },
+          mounted:function(){
+          },
+          methods:{
+            login:function(){
+                const that = this;
+                var data={
+                    username: this.username,
+                    password: this.password
+                };
+                //alert(data.username + data.password)
+                var data1 = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+
+               try{
+                    xhr.open('POST', '/login',true);
+                    xhr.setRequestHeader('content-type', 'application/json');
+                    xhr.onreadystatechange = function() {
+
+                        if (xhr.readyState==4 && xhr.status == 200) {
+                            const result=xhr.responseText;
+                            var obj=JSON.parse(result);
+                            console.log(obj.code+obj.msg);
+                            if(obj.code==0){
+                              alert(obj.msg);
+                              window.location.href = "/index.html"
+                            }
+                            else{
+                              alert(obj.msg);
+                              that.password=""
+                            }
+                            //const obj=JSON.parse(result);
+                        }
+                    }
+                }
+                catch(e){
+                }
+                //xhr.send(formdata); //传formdata格式的数据
+                xhr.send(data1);   //传json字符串格式的数据
+            },
+            ForgetPassword:function(){
+              const that = this;
+              var data={
+                  username: this.username,
+                  password: this.password
+              };
+              //alert(data.username + data.password)
+              var data1 = JSON.stringify(data);
+              var xhr = new XMLHttpRequest();
+
+             try{
+                  xhr.open('POST', '/forget',true);
+                  xhr.setRequestHeader('content-type', 'application/json');
+                  xhr.onreadystatechange = function() {
+
+                      if (xhr.readyState==4 && xhr.status == 200) {
+                          const result=xhr.responseText;
+                          var obj=JSON.parse(result);
+                          if(obj.code==0){
+                            alert(obj.msg);
+                          }
+                          else{
+                            alert(obj.msg);
+                          }
+                      }
+                  }
+              }
+              catch(e){
+
+              }
+              xhr.send(data1);
+            }
+          }
+      })
+  </script>
+</html>
